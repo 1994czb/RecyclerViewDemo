@@ -41,7 +41,8 @@ public class MainActivity extends AppCompatActivity {
            @Override
            public void onItemClick(View view, int position) {
                //增加和删除的话 不直接对postion做处理,因为此处的position是没有刷新以前的position
-               myAdapter.add(position);
+               //myAdapter.add(position);
+               myAdapter.selectedAll();
            }
        });
 
