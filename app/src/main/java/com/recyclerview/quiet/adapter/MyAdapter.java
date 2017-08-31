@@ -30,7 +30,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     //创建布局和viewHolder
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent,false);
+        //View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent,false);
+        //inflate的时候,需要传入parent和attachToRoot==false; 使用传入三个参数的方法
+        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
         return new MyViewHolder(inflate);
     }
     //增加的方法

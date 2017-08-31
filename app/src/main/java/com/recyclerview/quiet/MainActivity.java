@@ -24,6 +24,8 @@ public class MainActivity extends AppCompatActivity {
 
         //listview展示方式
         linearLayoutManager = new LinearLayoutManager(this);
+        //listview排布方向（水平  垂直）
+        linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
 
         //GridView展示方式
         gridLayoutManager = new GridLayoutManager(this, 3);
@@ -50,6 +52,8 @@ public class MainActivity extends AppCompatActivity {
                 myAdapter.updata(position,"这是更改后的数据");
             }
         });
+
+        recyclerView.addItemDecoration(new MyDecoration(this,LinearLayoutManager.VERTICAL));
 
     }
 
