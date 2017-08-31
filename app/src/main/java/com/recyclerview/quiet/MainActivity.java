@@ -29,8 +29,28 @@ public class MainActivity extends AppCompatActivity {
         gridLayoutManager = new GridLayoutManager(this, 3);
         //瀑布流的形式
         StaggeredGridLayoutManager staggeredGridLayoutManager = new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL);
+
+
         recyclerView.setLayoutManager(linearLayoutManager);
-        recyclerView.setAdapter(new MyAdapter());
+        final MyAdapter myAdapter = new MyAdapter();
+        recyclerView.setAdapter(myAdapter);
+       myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(View view, int position) {
+               //增加和删除的话 不直接对postion做处理,因为此处的position是没有刷新以前的position
+               myAdapter.add(position);
+           }
+       });
+        myAdapter.setOnItemLongClickListener(new MyAdapter.OnItemLongClickListener() {
+            @Override
+            public void onItemLongClick(View view, int position) {
+                //remove掉item项
+               // myAdapter.remove(position);
+
+                myAdapter.updata(position,"这是更改后的数据");
+            }
+        });
+
     }
 
 
