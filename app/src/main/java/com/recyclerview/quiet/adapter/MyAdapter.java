@@ -1,5 +1,7 @@
 package com.recyclerview.quiet.adapter;
 
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +22,7 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
 
     private final List<String> list;
 
+
     public MyAdapter() {
         list = new ArrayList<>();
         for (int i=0;i<30;i++){
@@ -30,9 +33,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     //创建布局和viewHolder
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        //View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent,false);
         //inflate的时候,需要传入parent和attachToRoot==false; 使用传入三个参数的方法
-        View inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
+         View inflate=null;
+        RecyclerView.LayoutManager layoutManager = ((RecyclerView) parent).getLayoutManager();
+        if (layoutManager instanceof GridLayoutManager){
+            inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item_vertical, parent, false);
+        }else if (layoutManager instanceof LinearLayoutManager){
+             inflate = LayoutInflater.from(parent.getContext()).inflate(R.layout.recycler_view_item, parent, false);
+        }
+
         return new MyViewHolder(inflate);
     }
     //增加的方法
@@ -81,10 +90,24 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.title.setText(list.get(position));
+
+       /* //整个item条目的点击
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (mItemClickListener != null) {
+                    mItemClickListener.onItemClick(v, position);
+                }
+            }
+        });*/
+
         /*//瀑布流必须判定item项
         if (position%2==1){
             holder.icon.setImageResource(R.drawable.c);
         }*/
+
+
         //item项图片点击事件
         holder.icon.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -96,6 +119,9 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
                 }
             }
         });
+
+
+
         //item项图片长按事件
         holder.icon.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
@@ -115,11 +141,15 @@ public class MyAdapter extends RecyclerView.Adapter<MyAdapter.MyViewHolder>{
     }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
+        //把整个view放到viewHolder中，实现点击条目监听事件
+        View itemView;
         TextView title;
         ImageView icon;
 
+        //findviewById 给控件绑定id
         public MyViewHolder(View itemView) {
             super(itemView);
+            this.itemView = itemView;
             title=itemView.findViewById(R.id.title);
             icon=itemView.findViewById(R.id.icon);
         }

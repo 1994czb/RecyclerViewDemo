@@ -15,6 +15,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView;
     private LinearLayoutManager linearLayoutManager;
     private GridLayoutManager gridLayoutManager;
+    private MyAdapter myAdapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
 
 
         recyclerView.setLayoutManager(linearLayoutManager);
-        final MyAdapter myAdapter = new MyAdapter();
+        myAdapter = new MyAdapter();
         recyclerView.setAdapter(myAdapter);
        myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
            @Override
@@ -43,6 +44,14 @@ public class MainActivity extends AppCompatActivity {
                myAdapter.add(position);
            }
        });
+
+      /* //点击整个item条目进行添加，更新，删除数据
+      myAdapter.setOnItemClickListener(new MyAdapter.OnItemClickListener() {
+           @Override
+           public void onItemClick(View view, int position) {
+               myAdapter.add(position);
+           }
+       });*/
         myAdapter.setOnItemLongClickListener(new MyAdapter.OnItemLongClickListener() {
             @Override
             public void onItemLongClick(View view, int position) {
@@ -69,8 +78,11 @@ public class MainActivity extends AppCompatActivity {
         //所以不能先判断是否是LinearLayoutManager (LinearLayoutManager范围大)
         if (layoutManager instanceof GridLayoutManager){
             recyclerView.setLayoutManager(linearLayoutManager);
+            //重新设置adapter之后 ,会重新走oncreateViewholder可以改变我们的布局
+            recyclerView.setAdapter(myAdapter);
         }else  if (layoutManager instanceof LinearLayoutManager){
             recyclerView.setLayoutManager(gridLayoutManager);
+            recyclerView.setAdapter(myAdapter);
         }
 
     }
